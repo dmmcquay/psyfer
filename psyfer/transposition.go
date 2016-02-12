@@ -45,14 +45,21 @@ func TransposeSplit(input string) string {
 }
 
 func DeTransposeRailFence(input string) string {
-	rf := ""
-	for i := 0; i < len(input); i += 2 {
-		rf += string(input[i])
+	derf := ""
+	length := len(input)
+	first := input[:length/2]
+	second := input[length/2:]
+	if length%2 == 0 {
+		for i, _ := range first {
+			derf += string(first[i]) + string(second[i])
+		}
+	} else {
+		for i, _ := range first {
+			derf += string(first[i]) + string(second[i+1])
+		}
+		derf += string(second[0])
 	}
-	for i := 1; i < len(input); i += 2 {
-		rf += string(input[i])
-	}
-	return rf
+	return derf
 }
 
 func DeTransposeSplit(input string) string {
@@ -71,7 +78,6 @@ func DeTransposeSplit(input string) string {
 		for i := 1; i < len(input)-2; i += 2 {
 			desplit += string(input[i])
 		}
-		//		fmt.Println(desplit)
 		desplit += string(input[len(input)-2]) + string(input[len(input)-1])
 	}
 	return desplit

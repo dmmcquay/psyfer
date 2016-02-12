@@ -13,6 +13,16 @@ func TestTransposeRailFence(t *testing.T) {
 			actual,
 		)
 	}
+	input = "12345"
+	expected = "13524"
+	actual = TransposeRailFence(input)
+	if expected != actual {
+		t.Errorf(
+			"failed TransposeRailFence:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
 	input = "123456"
 	expected = "135246"
 	actual = TransposeRailFence(input)
@@ -147,6 +157,39 @@ func TestDeTransposeSplit(t *testing.T) {
 	if expected != actual {
 		t.Errorf(
 			"failed DeTransposeSplit:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+}
+
+func TestDeTransposeRailFence(t *testing.T) {
+	expected := "helloworld"
+	input := "hloolelwrd"
+	actual := DeTransposeRailFence(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeRailFence:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+	expected = "12345"
+	input = "13524"
+	actual = DeTransposeRailFence(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeRailFence:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+	expected = "123"
+	input = "132"
+	actual = DeTransposeRailFence(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeRailFence:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
