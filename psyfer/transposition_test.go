@@ -8,7 +8,7 @@ func TestTransposeRailFence(t *testing.T) {
 	actual := TransposeRailFence(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeRailFence:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeRailFence:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -18,7 +18,7 @@ func TestTransposeRailFence(t *testing.T) {
 	actual = TransposeRailFence(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeRailFence:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeRailFence:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -28,7 +28,7 @@ func TestTransposeRailFence(t *testing.T) {
 	actual = TransposeRailFence(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeRailFence:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeRailFence:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -38,7 +38,7 @@ func TestTransposeRailFence(t *testing.T) {
 	actual = TransposeRailFence(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeRailFence:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeRailFence:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -51,7 +51,7 @@ func TestTransposeSplit(t *testing.T) {
 	actual := TransposeSplit(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeSplit:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeSplit:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -61,7 +61,7 @@ func TestTransposeSplit(t *testing.T) {
 	actual = TransposeSplit(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeSplit:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeSplit:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -71,7 +71,7 @@ func TestTransposeSplit(t *testing.T) {
 	actual = TransposeSplit(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeSplit:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeSplit:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -81,7 +81,7 @@ func TestTransposeSplit(t *testing.T) {
 	actual = TransposeSplit(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeSplit:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeSplit:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -91,7 +91,7 @@ func TestTransposeSplit(t *testing.T) {
 	actual = TransposeSplit(input)
 	if expected != actual {
 		t.Errorf(
-			"failed TransposeSplit:\n\texpected: % x\n\t  actual: % x",
+			"failed TransposeSplit:\n\texpected: % q\n\t  actual: % q",
 			expected,
 			actual,
 		)
@@ -103,8 +103,51 @@ func TestTransposeRandom(t *testing.T) {
 	actual := TransposeSplit(input)
 	if input == actual {
 		t.Errorf(
-			"failed TransposeRandom:\n\texpected: something random\n\t  actual: % x",
+			"failed TransposeRandom:\n\texpected: something random\n\t  actual: % q",
 			input,
+			actual,
+		)
+	}
+}
+
+func TestDeTransposeSplit(t *testing.T) {
+	expected := "helloworld"
+	input := "hweolrllod"
+	actual := DeTransposeSplit(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeSplit:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+	expected = "12"
+	input = "12"
+	actual = DeTransposeSplit(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeSplit:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+	expected = "12345"
+	input = "13245"
+	actual = DeTransposeSplit(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeSplit:\n\texpected: % q\n\t  actual: % q",
+			expected,
+			actual,
+		)
+	}
+	expected = "123"
+	input = "123"
+	actual = DeTransposeSplit(input)
+	if expected != actual {
+		t.Errorf(
+			"failed DeTransposeSplit:\n\texpected: % q\n\t  actual: % q",
+			expected,
 			actual,
 		)
 	}

@@ -43,3 +43,36 @@ func TransposeSplit(input string) string {
 	}
 	return split
 }
+
+func DeTransposeRailFence(input string) string {
+	rf := ""
+	for i := 0; i < len(input); i += 2 {
+		rf += string(input[i])
+	}
+	for i := 1; i < len(input); i += 2 {
+		rf += string(input[i])
+	}
+	return rf
+}
+
+func DeTransposeSplit(input string) string {
+	desplit := ""
+	if len(input)%2 == 0 {
+		for i := 0; i < len(input); i += 2 {
+			desplit += string(input[i])
+		}
+		for i := 1; i < len(input); i += 2 {
+			desplit += string(input[i])
+		}
+	} else {
+		for i := 0; i < len(input)-2; i += 2 {
+			desplit += string(input[i])
+		}
+		for i := 1; i < len(input)-2; i += 2 {
+			desplit += string(input[i])
+		}
+		//		fmt.Println(desplit)
+		desplit += string(input[len(input)-2]) + string(input[len(input)-1])
+	}
+	return desplit
+}
