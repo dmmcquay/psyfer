@@ -32,11 +32,11 @@ func TransposeSplit(input string) string {
 	first := input[:length/2]
 	second := input[length/2:]
 	if length%2 == 0 {
-		for i, _ := range first {
+		for i := range first {
 			split += string(first[i]) + string(second[i])
 		}
 	} else {
-		for i, _ := range first {
+		for i := range first {
 			split += string(first[i]) + string(second[i])
 		}
 		split += string(second[len(second)-1])
@@ -50,11 +50,11 @@ func DeTransposeRailFence(input string) string {
 	first := input[:length/2]
 	second := input[length/2:]
 	if length%2 == 0 {
-		for i, _ := range first {
+		for i := range first {
 			derf += string(first[i]) + string(second[i])
 		}
 	} else {
-		for i, _ := range first {
+		for i := range first {
 			derf += string(first[i]) + string(second[i+1])
 		}
 		derf += string(second[0])
