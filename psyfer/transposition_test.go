@@ -113,7 +113,7 @@ func TestTransposeRandom(t *testing.T) {
 	actual := TransposeSplit(input)
 	if input == actual {
 		t.Errorf(
-			"failed TransposeRandom:\n\texpected: something random\n\t  actual: % q",
+			"failed TransposeRandom:\n\texpected: something random % q\n\t  actual: % q",
 			input,
 			actual,
 		)

@@ -116,13 +116,13 @@ func TestMixColumns(t *testing.T) {
 		0x8e, 0x9f, 0x4d, 0x01,
 		0x4d, 0xdc, 0x7e, 0x01,
 		0xa1, 0x58, 0xbd, 0x01,
-		0xbc, 0x9d, 0xf8, 0x01,
+		0xbc, 0x9d, 0xf8, 0x02,
 	}
 	actual := MixColumns(input)
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get MixColumn:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get MixColumn:\n\texpected: %v \n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -151,7 +151,7 @@ func TestCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -180,7 +180,7 @@ func TestCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -208,7 +208,7 @@ func TestCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -236,7 +236,7 @@ func TestCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -265,7 +265,7 @@ func TestInvCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -293,7 +293,7 @@ func TestInvCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
@@ -321,7 +321,7 @@ func TestInvCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v \n\tactual:%v", expected, actual,
 			)
 		}
 	}
@@ -349,7 +349,7 @@ func TestInvCipher(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
-				"failed to get Cipher:\n\texpected:", expected, "\n\tactual:", actual,
+				"failed to get Cipher:\n\texpected: %v\n\tactual: %v", expected, actual,
 			)
 		}
 	}
