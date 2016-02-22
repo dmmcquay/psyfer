@@ -416,7 +416,7 @@ func FFmult(cur []byte, multiplier byte) byte {
 	return 0
 }
 
-func mixColumns_assist(cur []byte) []byte {
+func mixColumnsAssist(cur []byte) []byte {
 	a1 := FFmult(Xtime(cur[0]), MM[0]) ^ FFmult(Xtime(cur[1]), MM[1]) ^ FFmult(Xtime(cur[2]), MM[2]) ^ FFmult(Xtime(cur[3]), MM[3])
 	a2 := FFmult(Xtime(cur[0]), MM[4]) ^ FFmult(Xtime(cur[1]), MM[5]) ^ FFmult(Xtime(cur[2]), MM[6]) ^ FFmult(Xtime(cur[3]), MM[7])
 	a3 := FFmult(Xtime(cur[0]), MM[8]) ^ FFmult(Xtime(cur[1]), MM[9]) ^ FFmult(Xtime(cur[2]), MM[10]) ^ FFmult(Xtime(cur[3]), MM[11])
@@ -429,10 +429,10 @@ func MixColumns(cur Block) Block {
 	col2 := []byte{cur[1], cur[5], cur[9], cur[13]}
 	col3 := []byte{cur[2], cur[6], cur[10], cur[14]}
 	col4 := []byte{cur[3], cur[7], cur[11], cur[15]}
-	col1 = mixColumns_assist(col1)
-	col2 = mixColumns_assist(col2)
-	col3 = mixColumns_assist(col3)
-	col4 = mixColumns_assist(col4)
+	col1 = mixColumnsAssist(col1)
+	col2 = mixColumnsAssist(col2)
+	col3 = mixColumnsAssist(col3)
+	col4 = mixColumnsAssist(col4)
 	cur = Block{
 		col1[0], col2[0], col3[0], col4[0],
 		col1[1], col2[1], col3[1], col4[1],
@@ -447,10 +447,10 @@ func InvMixColumns(cur Block) Block {
 	col2 := []byte{cur[1], cur[5], cur[9], cur[13]}
 	col3 := []byte{cur[2], cur[6], cur[10], cur[14]}
 	col4 := []byte{cur[3], cur[7], cur[11], cur[15]}
-	col1 = InvmixColumns_assist(col1)
-	col2 = InvmixColumns_assist(col2)
-	col3 = InvmixColumns_assist(col3)
-	col4 = InvmixColumns_assist(col4)
+	col1 = InvMixColumnsAssist(col1)
+	col2 = InvMixColumnsAssist(col2)
+	col3 = InvMixColumnsAssist(col3)
+	col4 = InvMixColumnsAssist(col4)
 	cur = Block{
 		col1[0], col2[0], col3[0], col4[0],
 		col1[1], col2[1], col3[1], col4[1],
@@ -460,7 +460,7 @@ func InvMixColumns(cur Block) Block {
 	return cur
 }
 
-func InvmixColumns_assist(cur []byte) []byte {
+func InvMixColumnsAssist(cur []byte) []byte {
 	a1 := FFmult(Xtime(cur[0]), iMM[0]) ^ FFmult(Xtime(cur[1]), iMM[1]) ^ FFmult(Xtime(cur[2]), iMM[2]) ^ FFmult(Xtime(cur[3]), iMM[3])
 	a2 := FFmult(Xtime(cur[0]), iMM[4]) ^ FFmult(Xtime(cur[1]), iMM[5]) ^ FFmult(Xtime(cur[2]), iMM[6]) ^ FFmult(Xtime(cur[3]), iMM[7])
 	a3 := FFmult(Xtime(cur[0]), iMM[8]) ^ FFmult(Xtime(cur[1]), iMM[9]) ^ FFmult(Xtime(cur[2]), iMM[10]) ^ FFmult(Xtime(cur[3]), iMM[11])
