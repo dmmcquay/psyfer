@@ -1,14 +1,10 @@
 package psyfer
 
-import (
-	"fmt"
-	"math/rand"
-)
+import "math/rand"
 
 func TransposeRandom(input string) string {
 	shuffle := ""
 	list := rand.Perm(len(input))
-	fmt.Println(list)
 	for _, i := range list {
 		shuffle += string(input[i])
 	}
