@@ -15,13 +15,15 @@ func init() {
 }
 
 func main() {
+	psyfer.ReadConfig()
+	psyfer.Substitution("hello")
 	var input string
 	var cipher string
 	var cipType string
 	var key string
 
 	var encrypt = &cobra.Command{
-		Use:   "encrypt [cipher] [key] [input]",
+		Use:   "encrypt -c [cipher] -k [key] -i [input]",
 		Short: "encrypt string",
 		Long:  `encrypt given string`,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -52,7 +54,7 @@ func main() {
 	}
 
 	var decrypt = &cobra.Command{
-		Use:   "decrypt [cipher] [key] [input]",
+		Use:   "decrypt -c [cipher] -k [key] -i [input]",
 		Short: "decrypt string",
 		Long:  `decrypt given string`,
 		Run: func(cmd *cobra.Command, args []string) {
