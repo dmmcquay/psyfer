@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-var Sbox = [][]byte{
+var sbox = [][]byte{
 	{0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76},
 	{0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0},
 	{0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15},
@@ -26,7 +26,7 @@ var Sbox = [][]byte{
 	{0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16},
 }
 
-var InvSbox = [][]byte{
+var invSbox = [][]byte{
 	{0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb},
 	{0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb},
 	{0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d, 0xee, 0x4c, 0x95, 0x0b, 0x42, 0xfa, 0xc3, 0x4e},
@@ -45,7 +45,7 @@ var InvSbox = [][]byte{
 	{0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d},
 }
 
-var MM = []byte{
+var mm = []byte{
 	2, 3, 1, 1,
 	1, 2, 3, 1,
 	1, 1, 2, 3,
@@ -59,7 +59,7 @@ var iMM = []byte{
 	11, 13, 9, 14,
 }
 
-var Rcon = []byte{0x00, // Rcon[] is 1-based, so the first entry is just a place holder
+var rcon = []byte{0x00, // rcon[] is 1-based, so the first entry is just a place holder
 	0x01, 0x02, 0x04, 0x08,
 	0x10, 0x20, 0x40, 0x80,
 	0x1B, 0x36, 0x6C, 0xD8,
@@ -75,6 +75,7 @@ var Rcon = []byte{0x00, // Rcon[] is 1-based, so the first entry is just a place
 	0xE8, 0xCB, 0x8D,
 }
 
+// renamed []byte type for simplicity
 type Block []byte
 
 var keyexpanded []Block
@@ -130,6 +131,7 @@ func BlockGen(arg string) []Block {
 	return all
 }
 
+//performs AES cipher
 func Cipher(cur Block, bit int, incomingKey Block) Block {
 	if len(cur) != 16 {
 		missing := 16 - len(cur)
@@ -139,56 +141,57 @@ func Cipher(cur Block, bit int, incomingKey Block) Block {
 	}
 	key = Block{}
 	keyexpanded = []Block{}
-	AssignKey(incomingKey)
+	assignKey(incomingKey)
 	if bit == 128 {
-		KeyExpansionBase(128)
-		cur = AddRoundKey(cur, 0)
+		keyExpansionBase(128)
+		cur = addRoundKey(cur, 0)
 		for i := 0; i < 9; i++ {
-			cur = SubBytes(cur)
-			cur = ShiftRows(cur)
-			cur = MixColumns(cur)
-			cur = AddRoundKey(cur, i+1)
+			cur = subBytes(cur)
+			cur = shiftRows(cur)
+			cur = mixColumns(cur)
+			cur = addRoundKey(cur, i+1)
 		}
-		cur = SubBytes(cur)
-		cur = ShiftRows(cur)
-		cur = AddRoundKey(cur, 10)
+		cur = subBytes(cur)
+		cur = shiftRows(cur)
+		cur = addRoundKey(cur, 10)
 		return cur
 	}
 	if bit == 192 {
-		KeyExpansionBase(192)
-		cur = AddRoundKey(cur, 0)
+		keyExpansionBase(192)
+		cur = addRoundKey(cur, 0)
 		for i := 0; i < 11; i++ {
-			cur = SubBytes(cur)
-			cur = ShiftRows(cur)
-			cur = MixColumns(cur)
-			cur = AddRoundKey(cur, i+1)
+			cur = subBytes(cur)
+			cur = shiftRows(cur)
+			cur = mixColumns(cur)
+			cur = addRoundKey(cur, i+1)
 			if i == 0 {
 			}
 		}
-		cur = SubBytes(cur)
-		cur = ShiftRows(cur)
-		cur = AddRoundKey(cur, 12)
+		cur = subBytes(cur)
+		cur = shiftRows(cur)
+		cur = addRoundKey(cur, 12)
 		return cur
 	}
 	if bit == 256 {
-		KeyExpansionBase(256)
-		cur = AddRoundKey(cur, 0)
+		keyExpansionBase(256)
+		cur = addRoundKey(cur, 0)
 		for i := 0; i < 13; i++ {
-			cur = SubBytes(cur)
-			cur = ShiftRows(cur)
-			cur = MixColumns(cur)
-			cur = AddRoundKey(cur, i+1)
+			cur = subBytes(cur)
+			cur = shiftRows(cur)
+			cur = mixColumns(cur)
+			cur = addRoundKey(cur, i+1)
 			if i == 0 {
 			}
 		}
-		cur = SubBytes(cur)
-		cur = ShiftRows(cur)
-		cur = AddRoundKey(cur, 14)
+		cur = subBytes(cur)
+		cur = shiftRows(cur)
+		cur = addRoundKey(cur, 14)
 		return cur
 	}
 	return cur
 }
 
+//inverse AES cipher
 func InvCipher(cur Block, bit int, incomingKey Block) Block {
 	if len(cur) != 16 {
 		missing := 16 - len(cur)
@@ -198,73 +201,73 @@ func InvCipher(cur Block, bit int, incomingKey Block) Block {
 	}
 	key = Block{}
 	keyexpanded = []Block{}
-	AssignKey(incomingKey)
+	assignKey(incomingKey)
 	if bit == 128 {
-		KeyExpansionBase(128)
-		cur = AddRoundKey(cur, 10)
+		keyExpansionBase(128)
+		cur = addRoundKey(cur, 10)
 		for i := 9; i > 0; i-- {
-			cur = InvShiftRows(cur)
-			cur = InvSubBytes(cur)
-			cur = AddRoundKey(cur, i)
-			cur = InvMixColumns(cur)
+			cur = invShiftRows(cur)
+			cur = invSubBytes(cur)
+			cur = addRoundKey(cur, i)
+			cur = invMixColumns(cur)
 		}
-		cur = InvSubBytes(cur)
-		cur = InvShiftRows(cur)
-		cur = AddRoundKey(cur, 0)
+		cur = invSubBytes(cur)
+		cur = invShiftRows(cur)
+		cur = addRoundKey(cur, 0)
 		return cur
 	}
 	if bit == 192 {
-		KeyExpansionBase(192)
-		cur = AddRoundKey(cur, 12)
+		keyExpansionBase(192)
+		cur = addRoundKey(cur, 12)
 		for i := 11; i > 0; i-- {
-			cur = InvShiftRows(cur)
-			cur = InvSubBytes(cur)
-			cur = AddRoundKey(cur, i)
-			cur = InvMixColumns(cur)
+			cur = invShiftRows(cur)
+			cur = invSubBytes(cur)
+			cur = addRoundKey(cur, i)
+			cur = invMixColumns(cur)
 		}
-		cur = InvSubBytes(cur)
-		cur = InvShiftRows(cur)
-		cur = AddRoundKey(cur, 0)
+		cur = invSubBytes(cur)
+		cur = invShiftRows(cur)
+		cur = addRoundKey(cur, 0)
 		return cur
 	}
 	if bit == 256 {
-		KeyExpansionBase(256)
-		cur = AddRoundKey(cur, 14)
+		keyExpansionBase(256)
+		cur = addRoundKey(cur, 14)
 		for i := 13; i > 0; i-- {
-			cur = InvShiftRows(cur)
-			cur = InvSubBytes(cur)
-			cur = AddRoundKey(cur, i)
-			cur = InvMixColumns(cur)
+			cur = invShiftRows(cur)
+			cur = invSubBytes(cur)
+			cur = addRoundKey(cur, i)
+			cur = invMixColumns(cur)
 		}
-		cur = InvSubBytes(cur)
-		cur = InvShiftRows(cur)
-		cur = AddRoundKey(cur, 0)
+		cur = invSubBytes(cur)
+		cur = invShiftRows(cur)
+		cur = addRoundKey(cur, 0)
 		return cur
 	}
 	return cur
 }
 
-func AddRoundKey(cur Block, iteration int) Block {
+func addRoundKey(cur Block, iteration int) Block {
 	for i := 0; i < 16; i++ {
 		cur[i] = cur[i] ^ keyexpanded[iteration][i]
 	}
 	return cur
 }
 
-func AssignKey(cur Block) {
+func assignKey(cur Block) {
 	key = cur
 }
 
-func KeyExpansionBase(keysize int) {
+func keyExpansionBase(keysize int) {
 	if keysize == 128 {
 		keyexpanded = append(keyexpanded, key)
 		for i := 0; i < 10; i++ {
-			KeyExpansion(keyexpanded[i], i+1)
+			keyExpansion(keyexpanded[i], i+1)
 		}
 	} else if keysize == 192 {
 		keyexpanded = append(keyexpanded, key)
 		for i := 0; i < 8; i++ {
-			KeyExpansion192(keyexpanded[i], i+1)
+			keyExpansion192(keyexpanded[i], i+1)
 		}
 		temp := keyexpanded
 		keyexpanded = []Block{}
@@ -312,7 +315,7 @@ func KeyExpansionBase(keysize int) {
 	} else if keysize == 256 {
 		keyexpanded = append(keyexpanded, key)
 		for i := 0; i < 8; i++ {
-			KeyExpansion256(keyexpanded[i], i+1)
+			keyExpansion256(keyexpanded[i], i+1)
 		}
 		temp := keyexpanded
 		keyexpanded = []Block{}
@@ -335,7 +338,7 @@ func KeyExpansionBase(keysize int) {
 	}
 }
 
-func KeyExpansion(cur Block, iteration int) Block {
+func keyExpansion(cur Block, iteration int) Block {
 	var nb = Block{ //nb = nextBlock
 		0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00,
@@ -344,10 +347,10 @@ func KeyExpansion(cur Block, iteration int) Block {
 	}
 	rotword := []byte{cur[7], cur[11], cur[15], cur[3]}
 	for i := 0; i < 4; i++ {
-		upper, lower := SplitBytes(rotword[i])
-		rotword[i] = Sbox[upper][lower]
+		upper, lower := splitBytes(rotword[i])
+		rotword[i] = sbox[upper][lower]
 	}
-	rotword[0] = rotword[0] ^ cur[0] ^ Rcon[iteration]
+	rotword[0] = rotword[0] ^ cur[0] ^ rcon[iteration]
 	rotword[1] = rotword[1] ^ cur[4]
 	rotword[2] = rotword[2] ^ cur[8]
 	rotword[3] = rotword[3] ^ cur[12]
@@ -360,7 +363,7 @@ func KeyExpansion(cur Block, iteration int) Block {
 	return nb
 }
 
-func KeyExpansion192(cur Block, iteration int) Block {
+func keyExpansion192(cur Block, iteration int) Block {
 	var nb = Block{ //nb = nextBlock
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -369,10 +372,10 @@ func KeyExpansion192(cur Block, iteration int) Block {
 	}
 	rotword := []byte{cur[11], cur[17], cur[23], cur[5]}
 	for i := 0; i < 4; i++ {
-		upper, lower := SplitBytes(rotword[i])
-		rotword[i] = Sbox[upper][lower]
+		upper, lower := splitBytes(rotword[i])
+		rotword[i] = sbox[upper][lower]
 	}
-	rotword[0] = rotword[0] ^ cur[0] ^ Rcon[iteration]
+	rotword[0] = rotword[0] ^ cur[0] ^ rcon[iteration]
 	rotword[1] = rotword[1] ^ cur[6]
 	rotword[2] = rotword[2] ^ cur[12]
 	rotword[3] = rotword[3] ^ cur[18]
@@ -388,7 +391,7 @@ func KeyExpansion192(cur Block, iteration int) Block {
 	return nb
 }
 
-func KeyExpansion256(cur Block, iteration int) Block {
+func keyExpansion256(cur Block, iteration int) Block {
 	var nb = Block{ //nb = nextBlock
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -397,10 +400,10 @@ func KeyExpansion256(cur Block, iteration int) Block {
 	}
 	rotword := []byte{cur[15], cur[23], cur[31], cur[7]}
 	for i := 0; i < 4; i++ {
-		upper, lower := SplitBytes(rotword[i])
-		rotword[i] = Sbox[upper][lower]
+		upper, lower := splitBytes(rotword[i])
+		rotword[i] = sbox[upper][lower]
 	}
-	rotword[0] = rotword[0] ^ cur[0] ^ Rcon[iteration]
+	rotword[0] = rotword[0] ^ cur[0] ^ rcon[iteration]
 	rotword[1] = rotword[1] ^ cur[8]
 	rotword[2] = rotword[2] ^ cur[16]
 	rotword[3] = rotword[3] ^ cur[24]
@@ -411,8 +414,8 @@ func KeyExpansion256(cur Block, iteration int) Block {
 	nb[3], nb[11], nb[19], nb[27] = nb[2]^cur[3], nb[10]^cur[11], nb[18]^cur[19], nb[26]^cur[27]
 	sw := []byte{nb[3], nb[11], nb[19], nb[27]} //sw = subword
 	for i := 0; i < 4; i++ {
-		upper, lower := SplitBytes(sw[i])
-		sw[i] = Sbox[upper][lower]
+		upper, lower := splitBytes(sw[i])
+		sw[i] = sbox[upper][lower]
 	}
 	nb[4], nb[12], nb[20], nb[28] = sw[0]^cur[4], sw[1]^cur[12], sw[2]^cur[20], sw[3]^cur[28]
 	nb[5], nb[13], nb[21], nb[29] = nb[4]^cur[5], nb[12]^cur[13], nb[20]^cur[21], nb[28]^cur[29]
@@ -423,27 +426,27 @@ func KeyExpansion256(cur Block, iteration int) Block {
 	return nb
 }
 
-func SplitBytes(b byte) (byte, byte) {
+func splitBytes(b byte) (byte, byte) {
 	return b >> 4, b & 0x0f
 }
 
-func SubBytes(cur Block) Block {
+func subBytes(cur Block) Block {
 	for i := 0; i < 16; i++ {
-		upper, lower := SplitBytes(cur[i])
-		cur[i] = Sbox[upper][lower]
+		upper, lower := splitBytes(cur[i])
+		cur[i] = sbox[upper][lower]
 	}
 	return cur
 }
 
-func InvSubBytes(cur Block) Block {
+func invSubBytes(cur Block) Block {
 	for i := 0; i < 16; i++ {
-		upper, lower := SplitBytes(cur[i])
-		cur[i] = InvSbox[upper][lower]
+		upper, lower := splitBytes(cur[i])
+		cur[i] = invSbox[upper][lower]
 	}
 	return cur
 }
 
-func Xtime(cur byte) []byte {
+func xtime(cur byte) []byte {
 	var bytes []byte
 	bytes = append(bytes, cur)
 	for i := 1; i < 8; i++ { // first iteration done outside of for-loop
@@ -458,7 +461,7 @@ func Xtime(cur byte) []byte {
 	return bytes
 }
 
-func FFmult(cur []byte, multiplier byte) byte {
+func ffmutl(cur []byte, multiplier byte) byte {
 	if multiplier == 1 {
 		return cur[0]
 	} else if multiplier == 2 {
@@ -478,14 +481,14 @@ func FFmult(cur []byte, multiplier byte) byte {
 }
 
 func mixColumnsAssist(cur []byte) []byte {
-	a1 := FFmult(Xtime(cur[0]), MM[0]) ^ FFmult(Xtime(cur[1]), MM[1]) ^ FFmult(Xtime(cur[2]), MM[2]) ^ FFmult(Xtime(cur[3]), MM[3])
-	a2 := FFmult(Xtime(cur[0]), MM[4]) ^ FFmult(Xtime(cur[1]), MM[5]) ^ FFmult(Xtime(cur[2]), MM[6]) ^ FFmult(Xtime(cur[3]), MM[7])
-	a3 := FFmult(Xtime(cur[0]), MM[8]) ^ FFmult(Xtime(cur[1]), MM[9]) ^ FFmult(Xtime(cur[2]), MM[10]) ^ FFmult(Xtime(cur[3]), MM[11])
-	a4 := FFmult(Xtime(cur[0]), MM[12]) ^ FFmult(Xtime(cur[1]), MM[13]) ^ FFmult(Xtime(cur[2]), MM[14]) ^ FFmult(Xtime(cur[3]), MM[15])
+	a1 := ffmutl(xtime(cur[0]), mm[0]) ^ ffmutl(xtime(cur[1]), mm[1]) ^ ffmutl(xtime(cur[2]), mm[2]) ^ ffmutl(xtime(cur[3]), mm[3])
+	a2 := ffmutl(xtime(cur[0]), mm[4]) ^ ffmutl(xtime(cur[1]), mm[5]) ^ ffmutl(xtime(cur[2]), mm[6]) ^ ffmutl(xtime(cur[3]), mm[7])
+	a3 := ffmutl(xtime(cur[0]), mm[8]) ^ ffmutl(xtime(cur[1]), mm[9]) ^ ffmutl(xtime(cur[2]), mm[10]) ^ ffmutl(xtime(cur[3]), mm[11])
+	a4 := ffmutl(xtime(cur[0]), mm[12]) ^ ffmutl(xtime(cur[1]), mm[13]) ^ ffmutl(xtime(cur[2]), mm[14]) ^ ffmutl(xtime(cur[3]), mm[15])
 	return []byte{a1, a2, a3, a4}
 }
 
-func MixColumns(cur Block) Block {
+func mixColumns(cur Block) Block {
 	col1 := []byte{cur[0], cur[4], cur[8], cur[12]}
 	col2 := []byte{cur[1], cur[5], cur[9], cur[13]}
 	col3 := []byte{cur[2], cur[6], cur[10], cur[14]}
@@ -503,15 +506,15 @@ func MixColumns(cur Block) Block {
 	return cur
 }
 
-func InvMixColumns(cur Block) Block {
+func invMixColumns(cur Block) Block {
 	col1 := []byte{cur[0], cur[4], cur[8], cur[12]}
 	col2 := []byte{cur[1], cur[5], cur[9], cur[13]}
 	col3 := []byte{cur[2], cur[6], cur[10], cur[14]}
 	col4 := []byte{cur[3], cur[7], cur[11], cur[15]}
-	col1 = InvMixColumnsAssist(col1)
-	col2 = InvMixColumnsAssist(col2)
-	col3 = InvMixColumnsAssist(col3)
-	col4 = InvMixColumnsAssist(col4)
+	col1 = invMixColumnsAssist(col1)
+	col2 = invMixColumnsAssist(col2)
+	col3 = invMixColumnsAssist(col3)
+	col4 = invMixColumnsAssist(col4)
 	cur = Block{
 		col1[0], col2[0], col3[0], col4[0],
 		col1[1], col2[1], col3[1], col4[1],
@@ -521,22 +524,22 @@ func InvMixColumns(cur Block) Block {
 	return cur
 }
 
-func InvMixColumnsAssist(cur []byte) []byte {
-	a1 := FFmult(Xtime(cur[0]), iMM[0]) ^ FFmult(Xtime(cur[1]), iMM[1]) ^ FFmult(Xtime(cur[2]), iMM[2]) ^ FFmult(Xtime(cur[3]), iMM[3])
-	a2 := FFmult(Xtime(cur[0]), iMM[4]) ^ FFmult(Xtime(cur[1]), iMM[5]) ^ FFmult(Xtime(cur[2]), iMM[6]) ^ FFmult(Xtime(cur[3]), iMM[7])
-	a3 := FFmult(Xtime(cur[0]), iMM[8]) ^ FFmult(Xtime(cur[1]), iMM[9]) ^ FFmult(Xtime(cur[2]), iMM[10]) ^ FFmult(Xtime(cur[3]), iMM[11])
-	a4 := FFmult(Xtime(cur[0]), iMM[12]) ^ FFmult(Xtime(cur[1]), iMM[13]) ^ FFmult(Xtime(cur[2]), iMM[14]) ^ FFmult(Xtime(cur[3]), iMM[15])
+func invMixColumnsAssist(cur []byte) []byte {
+	a1 := ffmutl(xtime(cur[0]), iMM[0]) ^ ffmutl(xtime(cur[1]), iMM[1]) ^ ffmutl(xtime(cur[2]), iMM[2]) ^ ffmutl(xtime(cur[3]), iMM[3])
+	a2 := ffmutl(xtime(cur[0]), iMM[4]) ^ ffmutl(xtime(cur[1]), iMM[5]) ^ ffmutl(xtime(cur[2]), iMM[6]) ^ ffmutl(xtime(cur[3]), iMM[7])
+	a3 := ffmutl(xtime(cur[0]), iMM[8]) ^ ffmutl(xtime(cur[1]), iMM[9]) ^ ffmutl(xtime(cur[2]), iMM[10]) ^ ffmutl(xtime(cur[3]), iMM[11])
+	a4 := ffmutl(xtime(cur[0]), iMM[12]) ^ ffmutl(xtime(cur[1]), iMM[13]) ^ ffmutl(xtime(cur[2]), iMM[14]) ^ ffmutl(xtime(cur[3]), iMM[15])
 	return []byte{a1, a2, a3, a4}
 }
 
-func ShiftRows(cur Block) Block {
+func shiftRows(cur Block) Block {
 	cur[4], cur[5], cur[6], cur[7] = cur[5], cur[6], cur[7], cur[4]
 	cur[8], cur[9], cur[10], cur[11] = cur[10], cur[11], cur[8], cur[9]
 	cur[12], cur[13], cur[14], cur[15] = cur[15], cur[12], cur[13], cur[14]
 	return cur
 }
 
-func InvShiftRows(cur Block) Block {
+func invShiftRows(cur Block) Block {
 	cur[4], cur[5], cur[6], cur[7] = cur[7], cur[4], cur[5], cur[6]
 	cur[8], cur[9], cur[10], cur[11] = cur[10], cur[11], cur[8], cur[9]
 	cur[12], cur[13], cur[14], cur[15] = cur[13], cur[14], cur[15], cur[12]
