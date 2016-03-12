@@ -16,10 +16,7 @@ func init() {
 }
 
 func main() {
-	//psyfer.ReadConfig()
-	//psyfer.Substitution("hello")
-	var input string
-	//var key string
+	var key string
 	var decrypt bool
 
 	var trans = &cobra.Command{
@@ -32,11 +29,18 @@ func main() {
 	}
 
 	var sub = &cobra.Command{
-		Use:   "sub mode -c [cipher] -k [key] -i [input]",
+		Use:   "sub",
 		Short: "substitution cipher",
 		Long:  `perform substitution cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("missing input, see -h (--help) for more info")
+			if key == "" || len(args) < 1 {
+				fmt.Println("missing input, see -h (--help) for more info")
+				os.Exit(1)
+			}
+			psyfer.ReadConfig(key)
+			for _, arg := range args {
+				fmt.Println(psyfer.Substitution(arg))
+			}
 		},
 	}
 
@@ -135,16 +139,15 @@ func main() {
 	)
 
 	sub.Flags().StringVarP(
-		&input,
-		"input",
-		"i",
+		&key,
+		"key",
+		"k",
 		"",
-		"string to be encrypted",
+		"file containing key",
 	)
 
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(sub, aes, trans, vig)
-	sub.AddCommand(crack)
 	aes.AddCommand(crack)
 	trans.AddCommand(random, railfence, split)
 	vig.AddCommand(crack)

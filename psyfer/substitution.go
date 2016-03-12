@@ -2,7 +2,6 @@ package psyfer
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 )
@@ -13,13 +12,13 @@ type KeyJSON struct {
 
 var k = KeyJSON{}
 
-func ReadConfig() {
-	dat, err := ioutil.ReadFile("key.json")
+func ReadConfig(file string) {
+	dat, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 	json.Unmarshal([]byte(dat), &k)
-	fmt.Println(k.Key["a"])
+	k.Key[" "] = " " // keep spaces alive
 }
 
 func Substitution(input string) string {
@@ -31,6 +30,5 @@ func Substitution(input string) string {
 	for i := range inputSlice {
 		output += k.Key[inputSlice[i]]
 	}
-	fmt.Println(output)
 	return output
 }
