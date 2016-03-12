@@ -1,5 +1,12 @@
 package psyfer
 
+import (
+	"encoding/hex"
+	"fmt"
+	"log"
+	"strconv"
+)
+
 var Sbox = [][]byte{
 	{0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76},
 	{0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0},
@@ -73,7 +80,63 @@ type Block []byte
 var keyexpanded []Block
 var key Block
 
+func ToString(all []Block, keysize int, k Block, decrypt bool) string {
+	final := ""
+	for _, bl := range all {
+		result := Block{}
+		if decrypt {
+			result = InvCipher(bl, keysize, k)
+		} else {
+			result = Cipher(bl, keysize, k)
+		}
+		final += string(result)
+	}
+	return final
+}
+
+func ToHex(all []Block, keysize int, k Block, decrypt bool) string {
+	final := ""
+	for _, bl := range all {
+		result := Block{}
+		if decrypt {
+			result = InvCipher(bl, keysize, k)
+		} else {
+			result = Cipher(bl, keysize, k)
+		}
+		for i := 0; i < 16; i++ {
+			final += fmt.Sprintf("0x%x ", result[i])
+		}
+	}
+	return final
+}
+
+func BlockGen(arg string) []Block {
+	all := []Block{}
+	b := Block{}
+	for i, char := range arg {
+		value, err := strconv.Atoi(hex.EncodeToString([]byte(string(char))))
+		if err != nil {
+			log.Fatal(err)
+		}
+		if i%16 == 0 && i > 0 {
+			all = append(all, b)
+			b = b[:0]
+		}
+		b = append(b, byte(value))
+		if i == len(arg)-1 {
+			all = append(all, b)
+		}
+	}
+	return all
+}
+
 func Cipher(cur Block, bit int, incomingKey Block) Block {
+	if len(cur) != 16 {
+		missing := 16 - len(cur)
+		for i := 0; i < missing; i++ {
+			cur = append(cur, 0x00)
+		}
+	}
 	key = Block{}
 	keyexpanded = []Block{}
 	AssignKey(incomingKey)
@@ -85,14 +148,6 @@ func Cipher(cur Block, bit int, incomingKey Block) Block {
 			cur = ShiftRows(cur)
 			cur = MixColumns(cur)
 			cur = AddRoundKey(cur, i+1)
-			//fmt.Printf("\n")
-			//for i := 0; i < 16; i++ {
-			//	fmt.Printf("% x", cur[i])
-			//	if i%4 == 3 {
-			//		fmt.Printf("\n")
-			//	}
-			//}
-
 		}
 		cur = SubBytes(cur)
 		cur = ShiftRows(cur)
@@ -135,6 +190,12 @@ func Cipher(cur Block, bit int, incomingKey Block) Block {
 }
 
 func InvCipher(cur Block, bit int, incomingKey Block) Block {
+	if len(cur) != 16 {
+		missing := 16 - len(cur)
+		for i := 0; i < missing; i++ {
+			cur = append(cur, 0x00)
+		}
+	}
 	key = Block{}
 	keyexpanded = []Block{}
 	AssignKey(incomingKey)
