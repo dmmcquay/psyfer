@@ -19,46 +19,22 @@ func main() {
 	//psyfer.ReadConfig()
 	//psyfer.Substitution("hello")
 	var input string
-	var cipher string
-	var cipType string
 	//var key string
 	var decrypt bool
-
-	var sub = &cobra.Command{
-		Use:   "sub mode -c [cipher] -k [key] -i [input]",
-		Short: "substitution cipher",
-		Long:  `perform substitution cipher`,
-		Run: func(cmd *cobra.Command, args []string) {
-			if input != "" {
-				switch {
-				case cipher == "transposition":
-					switch {
-					case cipType == "random":
-						fmt.Println(psyfer.TransposeRandom(input))
-					case cipType == "rail":
-						fmt.Println(psyfer.TransposeRailFence(input))
-					case cipType == "split":
-						fmt.Println(psyfer.TransposeSplit(input))
-					default:
-						fmt.Println("Missing cipher sub type (random, rail, split)")
-					}
-				case cipher == "substitution":
-					fmt.Println("substitution")
-				case cipher == "vigenere":
-					fmt.Println("vigenere")
-				default:
-					fmt.Println("Must choose transposition, substitution, or vigenere")
-				}
-			} else {
-				fmt.Println("Missing input")
-			}
-		},
-	}
 
 	var trans = &cobra.Command{
 		Use:   "trans mode",
 		Short: "transposition cipher",
 		Long:  `perform transposition cipher`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("missing input, see -h (--help) for more info")
+		},
+	}
+
+	var sub = &cobra.Command{
+		Use:   "sub mode -c [cipher] -k [key] -i [input]",
+		Short: "substitution cipher",
+		Long:  `perform substitution cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("missing input, see -h (--help) for more info")
 		},
