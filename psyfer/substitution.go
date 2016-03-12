@@ -6,12 +6,14 @@ import (
 	"log"
 )
 
+//KeyJSON is a letter to letter mapping key
 type KeyJSON struct {
 	Key map[string]string `json:"key"`
 }
 
 var k = KeyJSON{}
 
+//ReadConfig reads a json file containing key map
 func ReadConfig(file string) {
 	dat, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -21,6 +23,7 @@ func ReadConfig(file string) {
 	k.Key[" "] = " " // keep spaces alive
 }
 
+//Substitution performs Substitution cipher based on key
 func Substitution(input string) string {
 	inputSlice := []string{}
 	output := ""

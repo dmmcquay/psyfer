@@ -2,6 +2,7 @@ package psyfer
 
 import "math/rand"
 
+//TransposeRandom randomly transposes string
 func TransposeRandom(input string) string {
 	shuffle := ""
 	list := rand.Perm(len(input))
@@ -11,6 +12,7 @@ func TransposeRandom(input string) string {
 	return shuffle
 }
 
+//TransposeRailFence performs railfence transpose
 func TransposeRailFence(input string) string {
 	rf := ""
 	for i := 0; i < len(input); i += 2 {
@@ -22,6 +24,7 @@ func TransposeRailFence(input string) string {
 	return rf
 }
 
+//TransposeSplit performs split transpose
 func TransposeSplit(input string) string {
 	split := ""
 	length := len(input)
@@ -40,6 +43,7 @@ func TransposeSplit(input string) string {
 	return split
 }
 
+//DeTransposeRailFence performs inverse railfence
 func DeTransposeRailFence(input string) string {
 	derf := ""
 	length := len(input)
@@ -58,6 +62,7 @@ func DeTransposeRailFence(input string) string {
 	return derf
 }
 
+//DeTransposeSplit performs inverse split
 func DeTransposeSplit(input string) string {
 	desplit := ""
 	if len(input)%2 == 0 {

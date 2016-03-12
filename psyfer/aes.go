@@ -75,12 +75,13 @@ var rcon = []byte{0x00, // rcon[] is 1-based, so the first entry is just a place
 	0xE8, 0xCB, 0x8D,
 }
 
-// renamed []byte type for simplicity
+//Block renamed []byte type for simplicity
 type Block []byte
 
 var keyexpanded []Block
 var key Block
 
+//ToString writes []Block to a string in ascii form
 func ToString(all []Block, keysize int, k Block, decrypt bool) string {
 	final := ""
 	for _, bl := range all {
@@ -95,6 +96,7 @@ func ToString(all []Block, keysize int, k Block, decrypt bool) string {
 	return final
 }
 
+//ToHex writes []Block to a string in hex form
 func ToHex(all []Block, keysize int, k Block, decrypt bool) string {
 	final := ""
 	for _, bl := range all {
@@ -111,6 +113,7 @@ func ToHex(all []Block, keysize int, k Block, decrypt bool) string {
 	return final
 }
 
+//BlockGen helps create []Block from incoming string
 func BlockGen(arg string) []Block {
 	all := []Block{}
 	b := Block{}
@@ -131,7 +134,7 @@ func BlockGen(arg string) []Block {
 	return all
 }
 
-//performs AES cipher
+//Cipher performs AES cipher
 func Cipher(cur Block, bit int, incomingKey Block) Block {
 	if len(cur) != 16 {
 		missing := 16 - len(cur)
@@ -191,7 +194,7 @@ func Cipher(cur Block, bit int, incomingKey Block) Block {
 	return cur
 }
 
-//inverse AES cipher
+//InvCipher inverse AES cipher
 func InvCipher(cur Block, bit int, incomingKey Block) Block {
 	if len(cur) != 16 {
 		missing := 16 - len(cur)
