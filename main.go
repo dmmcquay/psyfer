@@ -21,7 +21,7 @@ func main() {
 	var input string
 	var cipher string
 	var cipType string
-	var key string
+	//var key string
 	var decrypt bool
 
 	var sub = &cobra.Command{
@@ -165,56 +165,6 @@ func main() {
 		"",
 		"string to be encrypted",
 	)
-	sub.Flags().StringVarP(
-		&cipher,
-		"cipher",
-		"c",
-		"",
-		"cipher to be used (transposition, substitution, vigenere)",
-	)
-	sub.Flags().StringVarP(
-		&key,
-		"key",
-		"k",
-		"",
-		"key to be used",
-	)
-	sub.Flags().StringVarP(
-		&cipType,
-		"type",
-		"t",
-		"",
-		"sub type of cipher",
-	)
-
-	//decrypt.Flags().StringVarP(
-	//	&input,
-	//	"input",
-	//	"i",
-	//	"",
-	//	"string to be encrypted",
-	//)
-	//decrypt.Flags().StringVarP(
-	//	&cipher,
-	//	"cipher",
-	//	"c",
-	//	"",
-	//	"cipher to be used (transposition, substitution, vigenere)",
-	//)
-	//decrypt.Flags().StringVarP(
-	//	&key,
-	//	"key",
-	//	"k",
-	//	"",
-	//	"key to be used",
-	//)
-	//decrypt.Flags().StringVarP(
-	//	&cipType,
-	//	"type",
-	//	"t",
-	//	"",
-	//	"sub type of cipher",
-	//)
 
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(sub, aes, trans, vig)
@@ -223,11 +173,4 @@ func main() {
 	trans.AddCommand(random, railfence, split)
 	vig.AddCommand(crack)
 	rootCmd.Execute()
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("helloworld")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("1")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("12")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("123")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("1234")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("12345")))
-	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("1234567")))
 }
