@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 
 	"s.mcquay.me/dm/psyfer/psyfer"
@@ -15,17 +16,18 @@ func init() {
 }
 
 func main() {
-	psyfer.ReadConfig()
-	psyfer.Substitution("hello")
+	//psyfer.ReadConfig()
+	//psyfer.Substitution("hello")
 	var input string
 	var cipher string
 	var cipType string
 	var key string
+	var decrypt bool
 
-	var encrypt = &cobra.Command{
-		Use:   "encrypt -c [cipher] -k [key] -i [input]",
-		Short: "encrypt string",
-		Long:  `encrypt given string`,
+	var sub = &cobra.Command{
+		Use:   "sub mode -c [cipher] -k [key] -i [input]",
+		Short: "substitution cipher",
+		Long:  `perform substitution cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
 			if input != "" {
 				switch {
@@ -53,33 +55,81 @@ func main() {
 		},
 	}
 
-	var decrypt = &cobra.Command{
-		Use:   "decrypt -c [cipher] -k [key] -i [input]",
-		Short: "decrypt string",
-		Long:  `decrypt given string`,
+	var trans = &cobra.Command{
+		Use:   "trans mode",
+		Short: "transposition cipher",
+		Long:  `perform transposition cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
-			if input != "" {
-				switch {
-				case cipher == "transposition":
-					switch {
-					case cipType == "random":
-						fmt.Println("random doesn't have a decryptable solution")
-					case cipType == "rail":
-						fmt.Println(psyfer.DeTransposeRailFence(input))
-					case cipType == "split":
-						fmt.Println(psyfer.DeTransposeSplit(input))
-					default:
-						fmt.Println("Missing cipher sub type (random, rail, split)")
-					}
-				case cipher == "substitution":
-					fmt.Println("substitution")
-				case cipher == "vigenere":
-					fmt.Println("vigenere")
-				default:
-					fmt.Println("Must choose transposition, substitution, or vigenere")
+			fmt.Println("missing input, see -h (--help) for more info")
+		},
+	}
+
+	var aes = &cobra.Command{
+		Use:   "aes mode -c [cipher] -k [key] -i [input]",
+		Short: "aes cipher",
+		Long:  `perform aes cipher`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("missing input, see -h (--help) for more info")
+		},
+	}
+
+	var vig = &cobra.Command{
+		Use:   "vig mode -c [cipher] -k [key] -i [input]",
+		Short: "vignenere cipher",
+		Long:  `perform vigenere cipher`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("missing input, see -h (--help) for more info")
+		},
+	}
+
+	var random = &cobra.Command{
+		Use:   "random",
+		Short: "randomly transpose",
+		Long:  `randomly transposes input`,
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) < 1 {
+				fmt.Println("Please provide an input string")
+				os.Exit(1)
+			}
+			for _, arg := range args {
+				fmt.Println(psyfer.TransposeRandom(arg))
+			}
+		},
+	}
+
+	var railfence = &cobra.Command{
+		Use:   "railfence",
+		Short: "railfence transpose",
+		Long:  `performs railfence transposition on input`,
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) < 1 {
+				fmt.Println("Please provide an input string")
+				os.Exit(1)
+			}
+			for _, arg := range args {
+				if decrypt {
+					fmt.Println(psyfer.DeTransposeRailFence(arg))
+				} else {
+					fmt.Println(psyfer.TransposeRailFence(arg))
 				}
-			} else {
-				fmt.Println("Missing input")
+			}
+		},
+	}
+	var split = &cobra.Command{
+		Use:   "split",
+		Short: "split transpose",
+		Long:  `performs split transposition on input`,
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) < 1 {
+				fmt.Println("Please provide an input string")
+				os.Exit(1)
+			}
+			for _, arg := range args {
+				if decrypt {
+					fmt.Println(psyfer.DeTransposeSplit(arg))
+				} else {
+					fmt.Println(psyfer.TransposeSplit(arg))
+				}
 			}
 		},
 	}
@@ -93,28 +143,43 @@ func main() {
 		},
 	}
 
-	encrypt.Flags().StringVarP(
+	split.Flags().BoolVarP(
+		&decrypt,
+		"decrypt",
+		"d",
+		false,
+		"decrypt",
+	)
+	railfence.Flags().BoolVarP(
+		&decrypt,
+		"decrypt",
+		"d",
+		false,
+		"decrypt",
+	)
+
+	sub.Flags().StringVarP(
 		&input,
 		"input",
 		"i",
 		"",
 		"string to be encrypted",
 	)
-	encrypt.Flags().StringVarP(
+	sub.Flags().StringVarP(
 		&cipher,
 		"cipher",
 		"c",
 		"",
 		"cipher to be used (transposition, substitution, vigenere)",
 	)
-	encrypt.Flags().StringVarP(
+	sub.Flags().StringVarP(
 		&key,
 		"key",
 		"k",
 		"",
 		"key to be used",
 	)
-	encrypt.Flags().StringVarP(
+	sub.Flags().StringVarP(
 		&cipType,
 		"type",
 		"t",
@@ -122,37 +187,41 @@ func main() {
 		"sub type of cipher",
 	)
 
-	decrypt.Flags().StringVarP(
-		&input,
-		"input",
-		"i",
-		"",
-		"string to be encrypted",
-	)
-	decrypt.Flags().StringVarP(
-		&cipher,
-		"cipher",
-		"c",
-		"",
-		"cipher to be used (transposition, substitution, vigenere)",
-	)
-	decrypt.Flags().StringVarP(
-		&key,
-		"key",
-		"k",
-		"",
-		"key to be used",
-	)
-	decrypt.Flags().StringVarP(
-		&cipType,
-		"type",
-		"t",
-		"",
-		"sub type of cipher",
-	)
+	//decrypt.Flags().StringVarP(
+	//	&input,
+	//	"input",
+	//	"i",
+	//	"",
+	//	"string to be encrypted",
+	//)
+	//decrypt.Flags().StringVarP(
+	//	&cipher,
+	//	"cipher",
+	//	"c",
+	//	"",
+	//	"cipher to be used (transposition, substitution, vigenere)",
+	//)
+	//decrypt.Flags().StringVarP(
+	//	&key,
+	//	"key",
+	//	"k",
+	//	"",
+	//	"key to be used",
+	//)
+	//decrypt.Flags().StringVarP(
+	//	&cipType,
+	//	"type",
+	//	"t",
+	//	"",
+	//	"sub type of cipher",
+	//)
 
 	var rootCmd = &cobra.Command{Use: "app"}
-	rootCmd.AddCommand(encrypt, decrypt, crack)
+	rootCmd.AddCommand(sub, aes, trans, vig)
+	sub.AddCommand(crack)
+	aes.AddCommand(crack)
+	trans.AddCommand(random, railfence, split)
+	vig.AddCommand(crack)
 	rootCmd.Execute()
 	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("helloworld")))
 	//fmt.Println(psyfer.DeTransposeRailFence(psyfer.TransposeRailFence("1")))
