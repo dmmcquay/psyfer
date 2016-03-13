@@ -1,5 +1,6 @@
 package psyfer
 
+//VigenereCipher performts vigenere on input
 func VigenereCipher(input string, key string, decrypt bool) string {
 	alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	chars := []rune(input)
