@@ -464,7 +464,7 @@ func xtime(cur byte) []byte {
 	return bytes
 }
 
-func ffmutl(cur []byte, multiplier byte) byte {
+func ffmult(cur []byte, multiplier byte) byte {
 	if multiplier == 1 {
 		return cur[0]
 	} else if multiplier == 2 {
@@ -484,10 +484,10 @@ func ffmutl(cur []byte, multiplier byte) byte {
 }
 
 func mixColumnsAssist(cur []byte) []byte {
-	a1 := ffmutl(xtime(cur[0]), mm[0]) ^ ffmutl(xtime(cur[1]), mm[1]) ^ ffmutl(xtime(cur[2]), mm[2]) ^ ffmutl(xtime(cur[3]), mm[3])
-	a2 := ffmutl(xtime(cur[0]), mm[4]) ^ ffmutl(xtime(cur[1]), mm[5]) ^ ffmutl(xtime(cur[2]), mm[6]) ^ ffmutl(xtime(cur[3]), mm[7])
-	a3 := ffmutl(xtime(cur[0]), mm[8]) ^ ffmutl(xtime(cur[1]), mm[9]) ^ ffmutl(xtime(cur[2]), mm[10]) ^ ffmutl(xtime(cur[3]), mm[11])
-	a4 := ffmutl(xtime(cur[0]), mm[12]) ^ ffmutl(xtime(cur[1]), mm[13]) ^ ffmutl(xtime(cur[2]), mm[14]) ^ ffmutl(xtime(cur[3]), mm[15])
+	a1 := ffmult(xtime(cur[0]), mm[0]) ^ ffmult(xtime(cur[1]), mm[1]) ^ ffmult(xtime(cur[2]), mm[2]) ^ ffmult(xtime(cur[3]), mm[3])
+	a2 := ffmult(xtime(cur[0]), mm[4]) ^ ffmult(xtime(cur[1]), mm[5]) ^ ffmult(xtime(cur[2]), mm[6]) ^ ffmult(xtime(cur[3]), mm[7])
+	a3 := ffmult(xtime(cur[0]), mm[8]) ^ ffmult(xtime(cur[1]), mm[9]) ^ ffmult(xtime(cur[2]), mm[10]) ^ ffmult(xtime(cur[3]), mm[11])
+	a4 := ffmult(xtime(cur[0]), mm[12]) ^ ffmult(xtime(cur[1]), mm[13]) ^ ffmult(xtime(cur[2]), mm[14]) ^ ffmult(xtime(cur[3]), mm[15])
 	return []byte{a1, a2, a3, a4}
 }
 
@@ -528,10 +528,10 @@ func invMixColumns(cur Block) Block {
 }
 
 func invMixColumnsAssist(cur []byte) []byte {
-	a1 := ffmutl(xtime(cur[0]), iMM[0]) ^ ffmutl(xtime(cur[1]), iMM[1]) ^ ffmutl(xtime(cur[2]), iMM[2]) ^ ffmutl(xtime(cur[3]), iMM[3])
-	a2 := ffmutl(xtime(cur[0]), iMM[4]) ^ ffmutl(xtime(cur[1]), iMM[5]) ^ ffmutl(xtime(cur[2]), iMM[6]) ^ ffmutl(xtime(cur[3]), iMM[7])
-	a3 := ffmutl(xtime(cur[0]), iMM[8]) ^ ffmutl(xtime(cur[1]), iMM[9]) ^ ffmutl(xtime(cur[2]), iMM[10]) ^ ffmutl(xtime(cur[3]), iMM[11])
-	a4 := ffmutl(xtime(cur[0]), iMM[12]) ^ ffmutl(xtime(cur[1]), iMM[13]) ^ ffmutl(xtime(cur[2]), iMM[14]) ^ ffmutl(xtime(cur[3]), iMM[15])
+	a1 := ffmult(xtime(cur[0]), iMM[0]) ^ ffmult(xtime(cur[1]), iMM[1]) ^ ffmult(xtime(cur[2]), iMM[2]) ^ ffmult(xtime(cur[3]), iMM[3])
+	a2 := ffmult(xtime(cur[0]), iMM[4]) ^ ffmult(xtime(cur[1]), iMM[5]) ^ ffmult(xtime(cur[2]), iMM[6]) ^ ffmult(xtime(cur[3]), iMM[7])
+	a3 := ffmult(xtime(cur[0]), iMM[8]) ^ ffmult(xtime(cur[1]), iMM[9]) ^ ffmult(xtime(cur[2]), iMM[10]) ^ ffmult(xtime(cur[3]), iMM[11])
+	a4 := ffmult(xtime(cur[0]), iMM[12]) ^ ffmult(xtime(cur[1]), iMM[13]) ^ ffmult(xtime(cur[2]), iMM[14]) ^ ffmult(xtime(cur[3]), iMM[15])
 	return []byte{a1, a2, a3, a4}
 }
 

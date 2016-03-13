@@ -18,7 +18,7 @@ func TestShiftRows(t *testing.T) {
 		10, 11, 8, 9,
 		15, 12, 13, 14,
 	}
-	actual := ShiftRows(input)
+	actual := shiftRows(input)
 	if !bytes.Equal(expected, actual) {
 		t.Errorf(
 			"failed to get right ShiftRows:\n\texpected: % x\n\t  actual: % x",
@@ -42,7 +42,7 @@ func TestSubBytes(t *testing.T) {
 		0x11, 0x98, 0x5d, 0x52,
 		0xae, 0xf1, 0xe5, 0x30,
 	}
-	actual := SubBytes(input)
+	actual := subBytes(input)
 	if !bytes.Equal(expected, actual) {
 		t.Errorf(
 			"failed to get right ShiftRows:\n\texpected: % x\n\t  actual: % x",
@@ -56,7 +56,7 @@ func TestSplitBytes(t *testing.T) {
 	input := byte(0xab)
 	expected1 := byte(0xa)
 	expected2 := byte(0xb)
-	actual1, actual2 := SplitBytes(input)
+	actual1, actual2 := splitBytes(input)
 	if expected1 != actual1 || expected2 != actual2 {
 		t.Errorf(
 			"failed to get SplitBytes:\n\texpected: 0x%x 0x%x\n\t  actual: 0x%x 0x%x",
@@ -74,7 +74,7 @@ func TestXtime(t *testing.T) {
 		0x14, 0x28, 0x50, 0xa0,
 		0x5b, 0xb6, 0x77, 0xee,
 	}
-	actual := Xtime(input)
+	actual := xtime(input)
 	if !bytes.Equal(expected, actual) {
 		t.Errorf(
 			"failed to get Xtime:\n\texpected: % x\n\tactual: % x",
@@ -85,13 +85,13 @@ func TestXtime(t *testing.T) {
 }
 
 func TestFFmult(t *testing.T) {
-	input := Xtime(0x14)
+	input := xtime(0x14)
 	expected1 := byte(0x14)
 	expected2 := byte(0x28)
 	expected3 := byte(0x3c)
-	actual1 := FFmult(input, 1)
-	actual2 := FFmult(input, 2)
-	actual3 := FFmult(input, 3)
+	actual1 := ffmult(input, 1)
+	actual2 := ffmult(input, 2)
+	actual3 := ffmult(input, 3)
 	if expected1 != actual1 || expected2 != actual2 || expected3 != actual3 {
 		t.Errorf(
 			"failed to get FFmult:\n\texpected: 0x% x 0x% x 0x% x\n\t actual:0x% x 0x% x 0x% x",
@@ -118,7 +118,7 @@ func TestMixColumns(t *testing.T) {
 		0xa1, 0x58, 0xbd, 0x01,
 		0xbc, 0x9d, 0xf8, 0x01,
 	}
-	actual := MixColumns(input)
+	actual := mixColumns(input)
 	for i := 0; i < 16; i++ {
 		if actual[i] != expected[i] {
 			t.Errorf(
