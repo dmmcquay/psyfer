@@ -106,7 +106,7 @@ func main() {
 	}
 
 	var vig = &cobra.Command{
-		Use:   "vig mode -c [cipher] -k [key] -i [input]",
+		Use:   "vig",
 		Short: "vignenere cipher",
 		Long:  `perform vigenere cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -119,6 +119,19 @@ func main() {
 				key = strings.ToUpper(strings.Replace(key, " ", "", -1))
 				fmt.Printf("%v\n", psyfer.VigenereCipher(arg, key, decrypt))
 			}
+		},
+	}
+
+	var guess = &cobra.Command{
+		Use:   "guess",
+		Short: "guess cipher",
+		Long:  `will try to guess ceasar cipher`,
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) < 1 {
+				fmt.Println("missing input, see -h (--help) for more info")
+				os.Exit(1)
+			}
+			psyfer.Guess()
 		},
 	}
 
@@ -236,7 +249,7 @@ func main() {
 	)
 
 	var rootCmd = &cobra.Command{Use: "app"}
-	rootCmd.AddCommand(sub, aes, trans, vig)
+	rootCmd.AddCommand(sub, aes, trans, vig, guess)
 	trans.AddCommand(random, railfence, split)
 	rootCmd.Execute()
 }
