@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"s.mcquay.me/dm/psyfer/psyfer"
@@ -109,7 +110,15 @@ func main() {
 		Short: "vignenere cipher",
 		Long:  `perform vigenere cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("missing input, see -h (--help) for more info")
+			if len(args) < 1 || key == "" {
+				fmt.Println("missing input, see -h (--help) for more info")
+				os.Exit(1)
+			}
+			for _, arg := range args {
+				arg = strings.ToUpper(strings.Replace(arg, " ", "", -1))
+				key = strings.ToUpper(strings.Replace(key, " ", "", -1))
+				fmt.Printf("%v\n", psyfer.VigenereCipher(arg, key, decrypt))
+			}
 		},
 	}
 
@@ -165,15 +174,6 @@ func main() {
 		},
 	}
 
-	var crack = &cobra.Command{
-		Use:   "times [# times] [string to echo]",
-		Short: "Echo anything to the screen more times",
-		Long:  `echo things multiple times back to the user by providing a count and a string.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("crack")
-		},
-	}
-
 	//transpose flags
 	split.Flags().BoolVarP(
 		&decrypt,
@@ -219,10 +219,24 @@ func main() {
 		false,
 		"decrypt",
 	)
+	//virenere flags
+	vig.Flags().StringVarP(
+		&key,
+		"key",
+		"k",
+		"",
+		"encryption key string",
+	)
+	vig.Flags().BoolVarP(
+		&decrypt,
+		"decrypt",
+		"d",
+		false,
+		"decrypt",
+	)
 
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(sub, aes, trans, vig)
 	trans.AddCommand(random, railfence, split)
-	vig.AddCommand(crack)
 	rootCmd.Execute()
 }
