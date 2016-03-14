@@ -122,7 +122,7 @@ func main() {
 
 	var vig = &cobra.Command{
 		Use:   "vig",
-		Short: "vignenere cipher",
+		Short: "vigenere cipher",
 		Long:  `perform vigenere cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) < 1 || key == "" {

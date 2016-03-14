@@ -118,7 +118,12 @@ func BlockGen(arg string) []Block {
 	all := []Block{}
 	b := Block{}
 	for i, char := range arg {
-		value, err := strconv.Atoi(hex.EncodeToString([]byte(string(char))))
+		value, err := strconv.ParseUint(
+			hex.EncodeToString(
+				[]byte(string(char))),
+			16,
+			32,
+		)
 		if err != nil {
 			log.Fatal(err)
 		}
