@@ -1,4 +1,4 @@
-psyfer
+# Psyfer
  
 # Overview
 
@@ -31,7 +31,7 @@ Psyfer is built on a structure of commands, arguments & flags.
 
 Running `psyfer trans [mode] [flags] [input]` will perform various different 
 transposition ciphers to your input string.  the possible options are `random`, 
-`railfence` and `split`.
+`railfence`, and `split`.
 
 Here is an example:
 
