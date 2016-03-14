@@ -13,6 +13,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func clean(input string) string {
+	input = strings.ToUpper(strings.Replace(input, ",", "", -1))
+	input = strings.ToUpper(strings.Replace(input, ".", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "'", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "\"", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "(", "", -1))
+	input = strings.ToUpper(strings.Replace(input, ")", "", -1))
+	input = strings.ToUpper(strings.Replace(input, ";", "", -1))
+	input = strings.ToUpper(strings.Replace(input, ":", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "!", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "?", "", -1))
+	input = strings.ToUpper(strings.Replace(input, "$", "", -1))
+	return input
+}
+
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
@@ -115,6 +130,7 @@ func main() {
 				os.Exit(1)
 			}
 			for _, arg := range args {
+				arg = clean(arg)
 				arg = strings.ToUpper(strings.Replace(arg, " ", "", -1))
 				key = strings.ToUpper(strings.Replace(key, " ", "", -1))
 				fmt.Printf("%v\n", psyfer.VigenereCipher(arg, key, decrypt))
@@ -124,14 +140,18 @@ func main() {
 
 	var guess = &cobra.Command{
 		Use:   "guess",
-		Short: "guess cipher",
-		Long:  `will try to guess ceasar cipher`,
+		Short: "guess caesar cipher",
+		Long:  `will try to guess a caesar cipher`,
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) < 1 {
 				fmt.Println("missing input, see -h (--help) for more info")
 				os.Exit(1)
 			}
-			psyfer.Guess()
+			fmt.Println("Top 5 possibilities:")
+			for _, arg := range args {
+				arg = clean(arg)
+				psyfer.Guess(arg)
+			}
 		},
 	}
 

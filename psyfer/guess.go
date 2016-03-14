@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 )
 
 var charFreq = []float64{
@@ -58,22 +59,35 @@ func (p allPhi) Len() int           { return len(p) }
 func (p allPhi) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 func (p allPhi) Less(i, j int) bool { return p[i].value < p[j].value }
 
-func Guess() {
-	fmt.Println((6 - 7) % 26)
+func CharacterFrequency(input string) map[rune]float64 {
+	cf := make(map[rune]int)
+	freq := make(map[rune]float64)
+	for _, c := range input {
+		cf[c]++
+	}
+	l := len(input)
+	for c, n := range cf {
+		freq[c] = float64(n) / float64(l)
+	}
+	return freq
+}
+
+func Guess(input string) {
+	alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	input = strings.ToUpper(strings.Replace(input, " ", "", -1))
+	freq := CharacterFrequency(input)
 	total := []phi{}
 	for i := 0; i < 26; i++ {
 		a := 0.0
-		a += 0.1 * charFreq[pc(6, i)]
-		a += 0.1 * charFreq[pc(7, i)]
-		a += 0.1 * charFreq[pc(10, i)]
-		a += 0.3 * charFreq[pc(14, i)]
-		a += 0.2 * charFreq[pc(17, i)]
-		a += 0.1 * charFreq[pc(20, i)]
-		a += 0.1 * charFreq[pc(25, i)]
+		for c, n := range freq {
+			index := int(c - 'A')
+			a += n * charFreq[pc(index, i)]
+		}
 		p := phi{i, a}
 		total = append(total, p)
 	}
-	fmt.Println(total)
 	sort.Sort(allPhi(total))
-	fmt.Println(total)
+	for i := len(total) - 1; i > len(total)-6; i-- {
+		fmt.Println(VigenereCipher(input, string(alphabet[total[i].position]), true))
+	}
 }
