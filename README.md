@@ -5,25 +5,17 @@
 Psyfer is a app which lets you perform various different ciphers to input 
 strings.  It also provides the ability to guess certain ciphers. 
 
-Psyfer is project for UC Davis ECS 235A Computer and Information Security
 
 # Getting Started
 
 If you have a working Go enviroment on your computer, you can download pull 
-down this repo and build this code.  Otherwise, visit https://derek.mcquay.me/ecs235a/ 
-for downloadsTODO
+down this repo and build this code. 
 
 Once you have psyfer, you can run commands like:
 
     > psyfer vig -k xyz "this is my string"
 
 which will perform the vigenere cipher with a key of "xyz" on the given input
-
-# Concept
-
-Psyfer is built on a structure of commands, arguments & flags.
-
-**Commands** represent actions, **Args** are things and **Flags** are modifiers for those actions.
 
 # Usage
 
