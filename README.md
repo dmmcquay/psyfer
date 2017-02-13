@@ -1,4 +1,7 @@
 # Psyfer
+
+[![GoDoc](https://godoc.org/github.com/dmmcquay/psyfer?status.svg)](https://godoc.org/github.com/dmmcquay/psyfer)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dmmcquay/psyfer)](https://goreportcard.com/report/github.com/dmmcquay/psyfer)
  
 # Overview
 
